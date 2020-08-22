@@ -25,7 +25,7 @@ class Show(Film):
         return ("{} S{:02}E{:02} ".format(self.title, int(self.season), int(self.episode)))
     def __repr__(self):
         return "{} S{:02}E{:02}, {}, {}, {})".format(self.title, int(self.season), int(self.episode), self.year, self.genre, self.display)
-
+#shows number of all episodes from your library
     def number_of_episodes(self, title):
         search_show_list = [(i.title, i.season, i.episode) for i in library if title == i.title]
         return "There are {} episodes of this series in the database".format((len(search_show_list)))
@@ -48,19 +48,19 @@ shows = os.path.join(THIS_FOLDER, 'shows.csv')
 
 load_films(films)
 load_films(shows)
-
+#gives list of all episodes from Show class
 def get_series():
     shows_only = [x for x in library if (isinstance(x, Show))]
     by_title_shows = sorted(shows_only, key=lambda show: show.title)
     for i in by_title_shows:
         print(i)
-        
+#gives list of all films from the library       
 def get_movies():
     movies_only = [x for x in library if not isinstance(x, Show)]
     by_title_movies = sorted(movies_only, key=lambda movie: movie.title)
     for i in by_title_movies:
         print(i)
-
+#checks if the given title is in the library
 def search(title):
     search_title = [i.title for i in library if title == i.title]
     if len(search_title) == 0:
@@ -90,6 +90,7 @@ def search(title):
             break
         else:
             pass
+#gives a random value of display to a random element in the library
 def generate_views():
     import random
     x = random.choice(library)
@@ -97,6 +98,7 @@ def generate_views():
 def gen_views_10():
     for i in range(10):
         generate_views()
+
 def top_titles(x = 3, content_type = 'A'):
     by_display_all = sorted(library, key=lambda all: all.display, reverse = True)
     movies_only = [x for x in library if not isinstance(x, Show)]
@@ -121,7 +123,7 @@ def top_titles(x = 3, content_type = 'A'):
         elif content_type not in options.keys() :
             print("You gave the wrong value")
             break
-
+# adds to the library full seasons of the show
 def add_show_season():
     title = input("Enter the title of the show: ")
     search_title = [i.title for i in library if title == i.title]
