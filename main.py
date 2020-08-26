@@ -60,6 +60,7 @@ def get_movies():
     by_title_movies = sorted(movies_only, key=lambda movie: movie.title)
     for i in by_title_movies:
         print(i)
+
 #checks if the given title is in the library
 def search(title):
     search_title = [i.title for i in library if title == i.title]
@@ -67,29 +68,11 @@ def search(title):
         txt = "The title you are looking for does not exist in the library."
         return txt    
     for i in library:
-        if i.title in search_title and  not isinstance(i, Show):
-            return print(i)
-        elif i.title in search_title and isinstance(i, Show):
-            search_show_list = [(i.title, i.season) for i in library if title == i.title]
-            search_show_short = [search_show_list[0]]
-            x = 1
-            y = 0
-            while search_show_short[y] == search_show_list[x]:
-                x += 1
-                if x == len(search_show_list):
-                    break
-                elif search_show_short[y] != search_show_list[x]:
-                    search_show_short.append(search_show_list[x])
-                    y += 1
-                    x += 1
-                    if x == len(search_show_list):
-                        break
-            print("The library includes the following series:")
-            for i in search_show_short:
-                print("{} S{:02}".format(i[0], int(i[1])))
-            break
+        if i.title in search_title:
+            return print("The given title: '{}' exists in our database.".format(i.title))
         else:
             pass
+
 #gives a random value of display to a random element in the library
 def generate_views():
     import random
