@@ -1,3 +1,11 @@
+import os
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+films = os.path.join(THIS_FOLDER, 'films.csv')
+shows = os.path.join(THIS_FOLDER, 'shows.csv')
+
+from dateutil import tz
+import datetime
+
 class Film:
     def __init__(self, title, year, genre, display):
         self.title = title
@@ -41,13 +49,7 @@ def load_films(filename):
         elif filename == shows:
             for row in reader:
                 library.append(Show(row['episode'], row['season'], row['title'], row['year'], row['genre'], row['display']))
-import os
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-films = os.path.join(THIS_FOLDER, 'films.csv')
-shows = os.path.join(THIS_FOLDER, 'shows.csv')
 
-load_films(films)
-load_films(shows)
 #gives list of all episodes from Show class
 def get_series():
     shows_only = [x for x in library if (isinstance(x, Show))]
@@ -88,8 +90,6 @@ def top_titles(x = 3, content_type = 'A'):
     by_display_movies = sorted(movies_only, key=lambda movies: movies.display, reverse = True)
     shows_only = [x for x in library if (isinstance(x, Show))]
     by_display_shows = sorted(shows_only, key=lambda shows: shows.display, reverse = True)
-    '''x = input("How many top titles you want to see? ")
-    content_type = input("What do you want to see? all titles ('A'), only movies ('M') or just series ('S')? ")'''
     z = 0
     options = {
         'A': by_display_all,
@@ -127,19 +127,21 @@ def add_show_season():
             for i in range(1,(int(episodes) + 1)):
                 library.append(Show(i, season, title, year, genre, display))
 
-print()
-print("Biblioteka filmów")                
-print()
-gen_views_10()
-gen_views_10()
-gen_views_10()
+if __name__ == "__main__":
+    load_films(films)
+    load_films(shows)
 
-from dateutil import tz
-import datetime
-Warsaw_tz = tz.gettz("Europe/Warsaw")
-d = datetime.datetime.now(tz=Warsaw_tz)
-print("Najpopularniejsze filmy i seriale dnia {:02}.{:02}.{} r.:".format(d.day, d.month, d.year))
-print()
-print('LISTA TOP 3 NA DZIŚ')
-print()
-top_titles(x = 3, content_type = 'A')
+    print()
+    print("Biblioteka filmów")                
+    print()
+    gen_views_10()
+    gen_views_10()
+    gen_views_10()
+
+    Warsaw_tz = tz.gettz("Europe/Warsaw")
+    d = datetime.datetime.now(tz=Warsaw_tz)
+    print("Najpopularniejsze filmy i seriale dnia {:02}.{:02}.{} r.:".format(d.day, d.month, d.year))
+    print()
+    print('LISTA TOP 3 NA DZIŚ')
+    print()
+    top_titles(x = 3, content_type = 'A')
