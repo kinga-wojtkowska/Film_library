@@ -34,9 +34,10 @@ class Show(Film):
     def __repr__(self):
         return "{} S{:02}E{:02}, {}, {}, {})".format(self.title, int(self.season), int(self.episode), self.year, self.genre, self.display)
 #shows number of all episodes from your library
-    def number_of_episodes(self, title):
-        search_show_list = [(i.title, i.season, i.episode) for i in library if title == i.title]
-        return "There are {} episodes of this series in the database".format((len(search_show_list)))
+    def num_of_ep(self, x):
+        return "There are {} episodes of {} in the database".format((len(x)), self.title)
+
+
 
 library = []
 def load_films(filename):         
@@ -62,6 +63,11 @@ def get_movies():
     by_title_movies = sorted(movies_only, key=lambda movie: movie.title)
     for i in by_title_movies:
         print(i)
+
+def number_of_episodes(title):
+        search_show_list = [i for i in library if title == i.title]
+        show = search_show_list[0]
+        print(show.num_of_ep(search_show_list))      
 
 #checks if the given title is in the library
 def search(title):
