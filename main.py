@@ -22,6 +22,11 @@ class Film:
 
     def play(self, step=1):
         self.display += step
+        return "You just watched {}. Number of views: {}".format(self.play_data, self.display)
+
+    @property
+    def play_data(self):
+        return self.title
 
 class Show(Film):
     def __init__(self, episode, season, *args):
@@ -32,11 +37,14 @@ class Show(Film):
     def __str__(self):
         return ("{} S{:02}E{:02} ".format(self.title, int(self.season), int(self.episode)))
     def __repr__(self):
-        return "{} S{:02}E{:02}, {}, {}, {})".format(self.title, int(self.season), int(self.episode), self.year, self.genre, self.display)
-#shows number of all episodes from your library
+        return "{} S{:02}E{:02}, {})".format(self.title, int(self.season), int(self.episode), self.display)
+
     def num_of_ep(self, x):
         return "There are {} episodes of {} in the database".format((len(x)), self.title)
-
+    
+    @property
+    def play_data(self):
+        return "{} S{:02}E{:02}".format(self.title, int(self.season), int(self.episode))
 
 
 library = []
@@ -51,6 +59,24 @@ def load_films(filename):
             for row in reader:
                 library.append(Show(row['episode'], row['season'], row['title'], row['year'], row['genre'], row['display']))
 
+def play(title):
+    shows_only = [x for x in library if (isinstance(x, Show))]
+    for i in shows_only:
+        if title == i.title:
+            s = input("Enter the season number you watched: ")
+            e = input("Enter the episode number you watched: ")
+            for i,j in enumerate(library):
+                if title == j.title and s == j.season and e == j.episode:
+                    the_show = library[i]
+                    return the_show.play()
+    else:
+        for i,j in enumerate(library):
+            if title == j.title:
+                the_film = library[i]
+                return the_film.play()
+    
+        
+
 #gives list of all episodes from Show class
 def get_series():
     shows_only = [x for x in library if (isinstance(x, Show))]
@@ -63,7 +89,7 @@ def get_movies():
     by_title_movies = sorted(movies_only, key=lambda movie: movie.title)
     for i in by_title_movies:
         print(i)
-
+#shows number of all episodes from your library
 def number_of_episodes(title):
         search_show_list = [i for i in library if title == i.title]
         show = search_show_list[0]
