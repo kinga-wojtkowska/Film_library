@@ -1,8 +1,7 @@
 # Film Library
 1. Program creates the film library from 2 csv files - films.csv and shows.csv. Film is main class and Show is its subclass.
-2. Method Classid.play(library[index]) raise number of display by 1
-3. Method Show.number_of_episodes(library, 'title') - shows number of all episodes from your library
-FUNCTIONS
+2. play('title') raise number of display by 1 (if it's a series, it will ask for the season and episode number)
+3. number_of_episodes('title') - shows number of all episodes from your library
 4. get_series() - gives list of all episodes from Show class
 5. get_movies() - gives list of all films from the library
 6. search('title') - checks if the given title is in the library.
