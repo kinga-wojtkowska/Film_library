@@ -76,10 +76,10 @@ def lib_index(title, s, e):
         x = library[i]
         if s == 0 and e == 0:
             if title == x.title:
-                return library[i]
+                return x
         elif s != 0 and e != 0:
             if title == x.title and s == x.season and e == x.episode:
-                return library[i]
+                return x
 
 #gives list of all episodes from Show class
 def get_series():
