@@ -65,18 +65,24 @@ def play(title):
         if title == i.title:
             s = input("Enter the season number you watched: ")
             e = input("Enter the episode number you watched: ")
-            for i,j in enumerate(library):
-                x = library[i]
-                if title == x.title and s == x.season and e == x.episode:
-                    the_show = x
-                    return the_show.play()
+            the_show = lib_index(title, s, e)
+            return the_show.play()
     else:
-        for i,j in enumerate(library):
-            x = library[i]
-            if title == x.title:
-                the_film = x
-                return the_film.play()   
+        the_film = lib_index(title, s = 0, e = 0)
+        return the_film.play()   
         
+def lib_index(title, s, e):
+    for i in range(len(library)):
+        x = library[i]
+        if s == 0 and e == 0:
+            if title == x.title:
+                index = library.index(x)
+                return library[index]
+        elif s != 0 and e != 0:
+            if title == x.title and s == x.season and e == x.episode:
+                index = library.index(x)
+                return library[index]
+
 #gives list of all episodes from Show class
 def get_series():
     shows_only = [x for x in library if (isinstance(x, Show))]
