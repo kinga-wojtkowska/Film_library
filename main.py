@@ -60,23 +60,23 @@ def load_films(filename):
                 library.append(Show(row['episode'], row['season'], row['title'], row['year'], row['genre'], row['display']))
 
 def play(title):
-    shows_only = [x for x in library if (isinstance(x, Show))]
+    shows_only = [y for y in library if (isinstance(y, Show))]
     for i in shows_only:
         if title == i.title:
             s = input("Enter the season number you watched: ")
             e = input("Enter the episode number you watched: ")
             for i,j in enumerate(library):
-                if title == j.title and s == j.season and e == j.episode:
-                    the_show = library[i]
+                x = library[i]
+                if title == x.title and s == x.season and e == x.episode:
+                    the_show = x
                     return the_show.play()
     else:
         for i,j in enumerate(library):
-            if title == j.title:
-                the_film = library[i]
-                return the_film.play()
-    
+            x = library[i]
+            if title == x.title:
+                the_film = x
+                return the_film.play()   
         
-
 #gives list of all episodes from Show class
 def get_series():
     shows_only = [x for x in library if (isinstance(x, Show))]
@@ -101,11 +101,8 @@ def search(title):
     if len(search_title) == 0:
         txt = "The title you are looking for does not exist in the library."
         return txt    
-    for i in library:
-        if i.title in search_title:
-            return print("The given title: '{}' exists in our database.".format(i.title))
-        else:
-            pass
+    else:
+        return print("The given title: '{}' exists in our database.".format(search_title[0]))
 
 #gives a random value of display to a random element in the library
 def generate_views():
