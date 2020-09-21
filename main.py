@@ -48,16 +48,18 @@ class Show(Film):
 
 
 library = []
-def load_films(filename):         
+loaded_titles = []
+
+def load_films(filename):     
     import csv
     with open(filename, newline = '') as csvfile:
         reader = csv.DictReader(csvfile)
         if filename == films:
             for row in reader:
-                library.append(Film(row['title'], row['year'], row['genre'], row['display']))
+                loaded_titles.append(Film(row['title'], row['year'], row['genre'], row['display']))
         elif filename == shows:
             for row in reader:
-                library.append(Show(row['episode'], row['season'], row['title'], row['year'], row['genre'], row['display']))
+                loaded_titles.append(Show(row['episode'], row['season'], row['title'], row['year'], row['genre'], row['display']))
 
 def play(title):
     shows_only = [y for y in library if (isinstance(y, Show))]
@@ -163,6 +165,8 @@ def add_show_season():
 if __name__ == "__main__":
     load_films(films)
     load_films(shows)
+
+    library = loaded_titles
 
     print()
     print("Biblioteka filmów")                
