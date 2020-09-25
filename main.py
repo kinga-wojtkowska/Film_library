@@ -62,21 +62,21 @@ def load_films(filename):
                 loaded_titles.append(Show(row['episode'], row['season'], row['title'], row['year'], row['genre'], row['display']))
     return loaded_titles   
 
-def play(title):
-    shows_only = [y for y in library if (isinstance(y, Show))]
+def play(title, lib):
+    shows_only = [y for y in lib if (isinstance(y, Show))]
     for i in shows_only:
         if title == i.title:
             s = input("Enter the season number you watched: ")
             e = input("Enter the episode number you watched: ")
-            the_show = lib_index(title, s, e)
+            the_show = lib_index(title, lib, s, e)
             return the_show.play()
     else:
-        the_film = lib_index(title, s = 0, e = 0)
+        the_film = lib_index(title, lib, s = 0, e = 0)
         return the_film.play()   
         
-def lib_index(title, s, e):
-    for i in range(len(library)):
-        x = library[i]
+def lib_index(title, lib, s, e):
+    for i in range(len(lib)):
+        x = lib[i]
         if s == 0 and e == 0:
             if title == x.title:
                 return x
@@ -85,26 +85,26 @@ def lib_index(title, s, e):
                 return x
 
 #gives list of all episodes from Show class
-def get_series():
-    shows_only = [x for x in library if (isinstance(x, Show))]
+def get_series(lib):
+    shows_only = [x for x in lib if (isinstance(x, Show))]
     by_title_shows = sorted(shows_only, key=lambda show: show.title)
     for i in by_title_shows:
         print(i)
 #gives list of all films from the library       
-def get_movies():
-    movies_only = [x for x in library if not isinstance(x, Show)]
+def get_movies(lib):
+    movies_only = [x for x in lib if not isinstance(x, Show)]
     by_title_movies = sorted(movies_only, key=lambda movie: movie.title)
     for i in by_title_movies:
         print(i)
 #shows number of all episodes from your library
-def number_of_episodes(title):
-        search_show_list = [i for i in library if title == i.title]
+def number_of_episodes(title, lib):
+        search_show_list = [i for i in lib if title == i.title]
         show = search_show_list[0]
         print(show.num_of_ep(search_show_list))      
 
 #checks if the given title is in the library
-def search(title):
-    search_title = [i.title for i in library if title == i.title]
+def search(title, lib):
+    search_title = [i.title for i in lib if title == i.title]
     if len(search_title) == 0:
         txt = "The title you are looking for does not exist in the library."
         return txt    
@@ -112,19 +112,19 @@ def search(title):
         return print("The given title: '{}' exists in our database.".format(search_title[0]))
 
 #gives a random value of display to a random element in the library
-def generate_views():
+def generate_views(lib):
     import random
-    x = random.choice(library)
+    x = random.choice(lib)
     x.display = x.display + random.randint(0,101)
-def gen_views_10():
+def gen_views_10(lib):
     for i in range(10):
-        generate_views()
+        generate_views(lib)
 
-def top_titles(x = 3, content_type = 'A'):
-    by_display_all = sorted(library, key=lambda all: all.display, reverse = True)
-    movies_only = [x for x in library if not isinstance(x, Show)]
+def top_titles(lib, x = 3, content_type = 'A'):
+    by_display_all = sorted(lib, key=lambda all: all.display, reverse = True)
+    movies_only = [x for x in lib if not isinstance(x, Show)]
     by_display_movies = sorted(movies_only, key=lambda movies: movies.display, reverse = True)
-    shows_only = [x for x in library if (isinstance(x, Show))]
+    shows_only = [x for x in lib if (isinstance(x, Show))]
     by_display_shows = sorted(shows_only, key=lambda shows: shows.display, reverse = True)
     z = 0
     options = {
@@ -143,9 +143,9 @@ def top_titles(x = 3, content_type = 'A'):
             print("You gave the wrong value")
             break
 # adds to the library full seasons of the show
-def add_show_season():
+def add_show_season(lib):
     title = input("Enter the title of the show: ")
-    search_title = [i.title for i in library if title == i.title]
+    search_title = [i.title for i in lib if title == i.title]
     year = input("Enter the year of production: ")
     genre = input("Enter the genre of the show: ")
     season = input("Enter the season number you want to add: ")
@@ -153,15 +153,15 @@ def add_show_season():
     display = 0
     if len(search_title) == 0:
         for i in range(1,(int(episodes) + 1)):
-            library.append(Show(i, season, title, year, genre, display))
+            lib.append(Show(i, season, title, year, genre, display))
     elif title in search_title:
-        search_show_list = [(i.title, i.season) for i in library if title == i.title]
+        search_show_list = [(i.title, i.season) for i in lib if title == i.title]
         search_show_dict = dict(search_show_list)
         if season in search_show_dict.values():
             print("The given season number already exists in our database.")
         else:
             for i in range(1,(int(episodes) + 1)):
-                library.append(Show(i, season, title, year, genre, display))
+                lib.append(Show(i, season, title, year, genre, display))
 
 if __name__ == "__main__":
     films = load_films(films)
@@ -175,9 +175,9 @@ if __name__ == "__main__":
     print()
     print("Biblioteka filmów")                
     print()
-    gen_views_10()
-    gen_views_10()
-    gen_views_10()
+    gen_views_10(library)
+    gen_views_10(library)
+    gen_views_10(library)
 
     Warsaw_tz = tz.gettz("Europe/Warsaw")
     d = datetime.datetime.now(tz=Warsaw_tz)
@@ -185,4 +185,4 @@ if __name__ == "__main__":
     print()
     print('LISTA TOP 3 NA DZIŚ')
     print()
-    top_titles(x = 3, content_type = 'A')
+    top_titles(library, x = 3, content_type = 'A')
